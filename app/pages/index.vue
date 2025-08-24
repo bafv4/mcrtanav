@@ -1,5 +1,5 @@
 <template>
-  <v-card class="h-100 d-flex flex-column justify-center ga-4 pa-8" color="background" loading>
+  <v-card class="h-100 d-flex flex-column justify-center mt-4 ga-4 pa-8" loading>
     <div>
       <v-card-title class="text-h4 text-center">WIP</v-card-title>
       <v-card-subtitle class="text-subtitle-1 text-center text-pre-wrap">このページは準備中です。（トップページになる予定ですが。）</v-card-subtitle>
@@ -12,14 +12,10 @@
 </template>
 
 <script lang="ts" setup>
-import { rootInfo } from './root-info'
-definePageMeta({
-  pages: rootInfo.pages
-})
-useSeoMeta({
-  title: 'リダイレクト中...'
-})
+import { useDefCustomMeta } from '~/composables/def-custom-meta';
 
-// ツールページにリダイレクト
-onMounted(() => useRouter().push('/tools'))
+useDefCustomMeta({
+  category: 'root',
+  title: 'ホーム'
+})
 </script>ww

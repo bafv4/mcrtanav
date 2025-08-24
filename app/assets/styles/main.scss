@@ -4,13 +4,131 @@ body,
     font-family: 'IBM Plex Sans JP';
     font-weight: 500;
     font-style: normal;
-    color: rgb(var(--v-theme-main-color))
+    color: rgb(var(--v-theme-on-background))
 }
 
 * {
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
-.v-btn, .v-app-bar {
+.v-btn,
+.v-app-bar {
     user-select: none;
+}
+
+// =====================================
+// フォントサイズ
+// =====================================
+$text-sizes: (
+    085: 0.85,
+    100: 1,
+    120: 1.2,
+    135: 1.35,
+    150: 1.5
+);
+
+@each $key, $val in $text-sizes {
+    .ts-#{$key} {
+        font-size: #{$val}em;
+    }
+}
+
+// =====================================
+// フォントウェイト
+// =====================================
+$font-weights: (
+    normal: 500,
+    bold: 700,
+    strong: 900
+);
+
+@each $key, $val in $font-weights {
+    .tw-#{$key} {
+        font-weight: #{$val};
+    }
+}
+
+// =====================================
+// 色
+// =====================================
+$colors: (
+    primary: rgb(var(--v-theme-primary)),
+    secondary: rgb(var(--v-theme-secondary))
+);
+
+@each $key, $val in $colors {
+    .text-#{$key} {
+        color: #{$val};
+    }
+
+    .bg-#{$key} {
+        background-color: #{$val};
+    }
+}
+
+// =====================================
+// 幅・高さ
+// =====================================
+$widths: (
+    full: 100%,
+    half: 50%,
+    third: 33.3333%,
+    quarter: 25%
+);
+
+@each $key, $val in $widths {
+    .w-#{$key} {
+        width: #{$val};
+    }
+}
+
+$heights: (
+    full: 100%,
+    screen: 100vh,
+    half: 50%
+);
+
+@each $key, $val in $heights {
+    .h-#{$key} {
+        height: #{$val};
+    }
+}
+
+// head
+.th-1 {
+    @extend .tw-bold, .ts-150 !optional;
+    margin-top: .75em;
+    margin-bottom: .5em;
+}
+
+.th-2 {
+    @extend .tw-bold, .ts-135 !optional;
+    margin-top: .65em;
+    margin-bottom: .35em;
+}
+
+.th-3 {
+    @extend .tw-bold, .ts-120 !optional;
+    margin-top: .5em;
+    margin-bottom: .2em;
+}
+
+.th-4 {
+    @extend .tw-bold, .ts-100 !optional;
+    margin-top: .3em;
+    margin-bottom: .2em;
+}
+
+.markdown-body {
+    h1 {
+        @extend .th-2;
+    }
+
+    h2 {
+        @extend .th-3;
+    }
+
+    h3 {
+        @extend .th-4;
+    }
 }

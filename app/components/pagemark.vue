@@ -8,10 +8,8 @@
 <script lang="ts" setup>
 withDefaults(
   defineProps<{
-    size?: 'small' | 'medium' | 'large'
     to?: string
   }>(), {
-    size: 'medium'
   })
 </script>
 

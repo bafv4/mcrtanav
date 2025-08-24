@@ -5,10 +5,7 @@
 </template>
 
 <script lang="ts" setup>
-useDefCustomMeta({
-  category: 'tools', 
-  title: 'スターター'
-})
+
 </script>
 
 <style>

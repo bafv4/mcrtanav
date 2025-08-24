@@ -9,12 +9,13 @@ export default defineNuxtConfig({
   modules: [
     '@nuxt/image',
     '@nuxt/fonts',
+    'nuxt-auth-utils',
     (_options, nuxt) => {
       nuxt.hooks.hook('vite:extendConfig', (config) => {
         // @ts-expect-error
         config.plugins.push(vuetify({ autoImport: true }))
       })
-    },
+    }
   ],
   ssr: false,
   css: ['vuetify/styles', '@/assets/styles/main.scss', '@mdi/font/css/materialdesignicons.css'],
@@ -28,10 +29,20 @@ export default defineNuxtConfig({
       },
     },
   },
-  
   app: {
     head: {
       titleTemplate: '%s - マイクラRTAナビ',
     }
+  },
+  runtimeConfig: {
+    // サーバー側でのみ利用
+    discordBotToken: process.env.DISCORD_BOT_TOKEN,
+    targetGuildId: process.env.TARGET_GUILD_ID,
+    allowedRoleIds: process.env.ALLOWED_ROLE_IDS?.split(',') ?? [],
+
+    // クライアントでも使いたい変数は public に
+    public: {
+      discordRedirectUri: process.env.DISCORD_REDIRECT_URI,
+    },
   },
 })

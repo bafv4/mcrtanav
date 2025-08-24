@@ -1,10 +1,8 @@
-interface aPage {
-    title: string,
-    to: string,
-    version?: string
-}
-
-interface routeInfo {
-    category?: string,
-    pages: aPage[]
+interface pageInfo {
+    id: string,
+    name: string
+    route: string,
+    search: boolean,
+    chip?: string
+    options?: Record<string, string>
 }

@@ -1,9 +1,9 @@
 <template>
   <div class="d-flex ga-2 align-center" :class="{ 'flex-column': mobile }">
-    <router-link v-for="p in pages" :to="p.to" class="btn justify-center rounded d-flex ga-1 align-baseline text-body-2"
-      :class="{ 'active': isActive(p.to), 'w-100 py-2 text-body-1': mobile }" v-ripple>
-      <span class="d-inline-block">{{ p.title }}</span>
-      <v-chip size="small" density="comfortable" v-if="p.version" class="rounded-md">{{ p.version }}</v-chip>
+    <router-link v-for="p in pages" :to="p.route" class="btn justify-center rounded d-flex ga-1 align-baseline text-body-2"
+      :class="{ 'active': isActive(p.route), 'w-100 py-2 text-body-1': mobile }" v-ripple>
+      <span class="d-inline-block">{{ p.name }}</span>
+      <v-chip size="small" density="comfortable" v-if="p.chip" class="rounded-md">{{ p.chip }}</v-chip>
     </router-link>
   </div>
 </template>
@@ -11,7 +11,7 @@
 <script lang="ts" setup>
 withDefaults(
   defineProps<{
-    pages: aPage[],
+    pages: pageInfo[],
     mobile?: boolean
   }>(), {
     mobile: false
@@ -20,7 +20,7 @@ withDefaults(
 
 const isActive = computed(() => {
   return (path: string) => {
-    return path === useRoute().path || path === useRoute().fullPath
+    return path == getFirstSegment(useRoute().path) || path == getFirstSegment(useRoute().fullPath)
   }
 }) 
 </script>
@@ -29,7 +29,7 @@ const isActive = computed(() => {
 .btn {
   display: inline-block;
   text-decoration: none;
-  color: rgb(var(--v-theme-main-font));
+  color: rgb(var(--v-theme-on-background));
   padding: .35rem .5rem;
 }
 

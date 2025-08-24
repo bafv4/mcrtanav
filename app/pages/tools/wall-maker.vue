@@ -1,10 +1,14 @@
 <template>
   <div>
-    404
+    
   </div>
 </template>
 
 <script lang="ts" setup>
+useDefCustomMeta({
+  title: 'Wall Maker',
+  category: 'tools'
+})
 </script>
 
 <style>
