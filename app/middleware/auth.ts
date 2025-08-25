@@ -1,4 +1,8 @@
-export default defineNuxtRouteMiddleware(() => {
+export default defineNuxtRouteMiddleware((to) => {
     const { loggedIn } = useUserSession()
-    if (!loggedIn.value) return navigateTo('/login')
+    console.log('auth: ' + to)
+    if (!loggedIn.value) {
+        sessionStorage.setItem('redirectAfterLogin', to.fullPath)
+        return navigateTo(`/login`)
+    }
 })

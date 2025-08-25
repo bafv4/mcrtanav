@@ -3,7 +3,8 @@ declare module '#auth-utils' {
     interface User {
         id: string
         name: string
-        roles: string[]     // ← ここを使いたいフィールドに合わせて拡張
+        avatar: string
+        authority: string[]
     }
 
     interface UserSession {

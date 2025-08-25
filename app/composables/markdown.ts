@@ -8,6 +8,24 @@ export const useMarkdown = () => {
     typographer: true
   })
 
+  const defaultImageRender =
+    md.renderer.rules.image ||
+    function (tokens, idx, options, env, self) {
+      return self.renderToken(tokens, idx, options)
+    }
+
+  md.renderer.rules.image = (tokens, idx, options, env, self) => {
+    const token = tokens[idx]
+    const src = 'https://raw.githubusercontent.com/bafv4/mcrtanav-contents/main/' + token?.attrGet('src')
+    const alt = token?.content || token?.attrGet('alt') || ''
+    return `<img
+              src="${src}" 
+              alt="${alt}" 
+              class="my-4 rounded-lg"
+              style="max-width: 100%;"
+            />`
+  }
+
   const fetchFiles = async (category: string) => {
     const url = `https://api.github.com/repos/bafv4/mcrtanav-contents/git/trees/main?recursive=1`
     const res = await fetch(url)

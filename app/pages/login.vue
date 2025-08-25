@@ -1,6 +1,12 @@
 <template>
   <div class="p-6">
-    <h1>ログインページ</h1>
-    <a href="/api/auth/discord" class="btn">Discordでログイン</a>
+    <p class="th-1">ログインページ</p>
+    <v-btn @click="loginWithDiscord">Discordでログイン</v-btn>
   </div>
 </template>
+
+<script setup lang="ts">
+const loginWithDiscord = () => {
+  window.location.href = `/api/auth/discord`
+}
+</script>

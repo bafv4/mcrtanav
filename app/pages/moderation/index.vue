@@ -4,7 +4,7 @@
 
     <div v-if="loggedIn">
       <p>ようこそ {{ user?.name }} さん！</p>
-      <p v-if="user?.roles?.length">あなたのロール: {{ user.roles.join(', ') }}</p>
+      <v-avatar :image="user?.avatar" />
       <button @click="clear">ログアウト</button>
     </div>
 
@@ -15,14 +15,11 @@
 </template>
 
 <script lang="ts" setup>
-import auth from '~/middleware/auth'
-
 useDefCustomMeta({
   title: '管理ページ',
-  requiresAuth: true,
+  auth: true
 })
 
-definePageMeta({ middleware: [auth] })
 const { user, loggedIn, clear } = useUserSession()
 </script>
 

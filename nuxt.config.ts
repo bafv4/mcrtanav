@@ -39,6 +39,7 @@ export default defineNuxtConfig({
     discordBotToken: process.env.DISCORD_BOT_TOKEN,
     targetGuildId: process.env.TARGET_GUILD_ID,
     allowedRoleIds: process.env.ALLOWED_ROLE_IDS?.split(',') ?? [],
+    redirectUri: process.env.REDIRECT_URI,
 
     // クライアントでも使いたい変数は public に
     public: {
