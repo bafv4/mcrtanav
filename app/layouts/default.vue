@@ -20,9 +20,16 @@
                         <r-btn :pages="pages" />
                     </div>
 
-                    <div class="d-none d-md-flex" v-if="loggedIn">
-                        <v-divider vertical class="d-none d-md-flex mr-4" />
-                        <v-btn icon density="comfortable" @click="modal = true">
+                    <div class="d-none d-md-flex">
+                        <v-divider vertical class="mr-4" />
+
+                        <!-- ログイン状態に応じた表示 -->
+                        <v-btn v-if="!loggedIn" prepend-icon="mdi-discord" color="primary" variant="outlined"
+                            @click="showAuthDialog" density="comfortable">
+                            ログイン
+                        </v-btn>
+
+                        <v-btn v-else icon density="comfortable" @click="showUserDialog">
                             <v-avatar :image="user?.avatar" size="28" />
                         </v-btn>
                     </div>
@@ -41,16 +48,7 @@
                 <NuxtPage v-if="!error" />
                 <slot v-else></slot>
 
-                <v-dialog v-model="modal">
-                    <v-card elevation="4" class="pa-2">
-                        <v-card-title>Discordアカウントでログイン中</v-card-title>
-                        <template v-slot:actions>
-                            <v-btn prepend-icon="mdi-logout" color="error" variant="outlined"
-                                @click="logout">ログアウト</v-btn>
-                            <v-btn @click="modal = false" to="/moderation">モデレーションページへ</v-btn>
-                        </template>
-                    </v-card>
-                </v-dialog>
+                <auth-dialog />
             </v-container>
         </v-main>
 
@@ -61,6 +59,7 @@
 </template>
 
 <script setup lang="ts">
+import { useTheme } from 'vuetify/lib/composables/theme.mjs';
 import { useTheme } from 'vuetify/lib/composables/theme.mjs';
 import { pages } from '~/assets/data/pages';
 const { user, loggedIn, clear } = useUserSession()

@@ -18,8 +18,8 @@ const theme = {
         light: {
             dark: false,
             colors: {
-                primary: colors.teal.base,       // プライマリ: 青緑
-                secondary: colors.purple.base,   // セカンダリ: 紫
+                primary: colors.deepPurple.base,       // プライマリ: 青緑
+                secondary: colors.lightGreen.base,   // セカンダリ: 紫
                 accent: colors.amber.base,       // 強調色
                 background: colors.grey.lighten5,
                 surface: '#F4F4F6',
@@ -33,8 +33,8 @@ const theme = {
         dark: {
             dark: true,
             colors: {
-                primary: colors.teal.lighten2,   // ダーク用に少し明るい青緑
-                secondary: colors.purple.lighten2,
+                primary: colors.lightGreen.lighten2,   // ダーク用に少し明るい青緑
+                secondary: colors.deepPurple.lighten2,
                 accent: colors.amber.lighten2,
                 background: colors.grey.darken4,
                 surface: '#272729',
