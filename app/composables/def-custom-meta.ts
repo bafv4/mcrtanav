@@ -1,5 +1,4 @@
 import type { LayoutKey } from "#build/types/layouts"
-import auth from "~/middleware/auth"
 
 export const useDefCustomMeta = (options: {
   category?: string,

@@ -1,4 +1,5 @@
 <template>
+    <NuxtLoadingIndicator class="z-index: 1000;" :color="getIndColor" :height="2" />
     <v-app>
         <v-app-bar class="bar select-none" density="comfortable" elevation="2" app>
             <v-btn class="d-block position-absolute ml-4 d-md-none" size="medium" icon="mdi-menu" :ripple="false"
@@ -60,13 +61,15 @@
 </template>
 
 <script setup lang="ts">
+import { useTheme } from 'vuetify/lib/composables/theme.mjs';
 import { pages } from '~/assets/data/pages';
 const { user, loggedIn, clear } = useUserSession()
-
+const theme = useTheme()
 const error = useError()
 
 const drawer = ref(false)
 const modal = ref(false)
+const getIndColor = computed(() => theme.current.value.colors.primary)
 
 const logout = () => {
     modal.value = false
