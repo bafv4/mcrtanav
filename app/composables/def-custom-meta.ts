@@ -10,13 +10,6 @@ export const useDefCustomMeta = (options: {
   const meta = useRoute().meta
   onMounted(() => {
     meta.layout = options.layout
-    if (options.auth) {
-      meta.auth = true
-      meta.middleware = [auth]
-    } else {
-      meta.auth = false
-      meta.middleware = []
-    }
   })
   useSeoMeta({
     title: options.title
