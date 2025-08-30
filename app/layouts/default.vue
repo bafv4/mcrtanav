@@ -60,9 +60,9 @@
 
 <script setup lang="ts">
 import { useTheme } from 'vuetify/lib/composables/theme.mjs';
-import { useTheme } from 'vuetify/lib/composables/theme.mjs';
 import { pages } from '~/assets/data/pages';
 const { user, loggedIn, clear } = useUserSession()
+const { showAuthDialog, showUserDialog } = useAuthDialog()
 const theme = useTheme()
 const error = useError()
 
