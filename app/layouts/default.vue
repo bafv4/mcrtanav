@@ -41,7 +41,8 @@
                 <slot v-else></slot>
 
                 <auth-dialog />
-                <search-dialog :category="getCategory()" />
+                <!-- <search-dialog :category="getCategory()" /> -->
+                 <search />
             </v-container>
         </v-main>
 
@@ -56,7 +57,8 @@ import { useTheme } from 'vuetify/lib/composables/theme.mjs';
 import { pages } from '~/assets/data/pages';
 const { user, loggedIn, clear } = useUserSession()
 const { showAuthDialog, showUserDialog } = useAuthDialog()
-const { openSearchDialog } = useSearch()
+// const { openSearchDialog } = useSearch()
+const { openSearchDialog } = useSearchWithFuse()
 const theme = useTheme()
 const error = useError()
 const route = useRoute()
