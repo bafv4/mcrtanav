@@ -1,14 +1,28 @@
+* {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
 :root,
 body,
 .v-application {
     font-family: 'IBM Plex Sans JP';
     font-weight: 500;
     font-style: normal;
-    color: rgb(var(--v-theme-on-background))
+    color: rgb(var(--v-theme-on-background));
+    user-select: text;
 }
 
-* {
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+a {
+    color: rgb(var(--v-theme-primary));
+}
+
+a:hover {
+    color: color-mix(in srgb, rgb(var(--v-theme-primary)), rgb(var(--v-theme-on-background)))
+}
+
+::selection {
+    background-color: rgb(var(--v-theme-primary));
+    color: rgb(var(--v-theme-background));
 }
 
 .v-btn,

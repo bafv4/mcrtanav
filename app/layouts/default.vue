@@ -12,7 +12,7 @@
                     </v-app-bar-title>
 
                     <v-chip prepend-icon="mdi-magnify" class="cursor-pointer" variant="tonal" density="comfortable"
-                        @click="" v-if="pages.find(p => p.route == getFirstSegment($route.path))?.search">検索</v-chip>
+                        @click="handleSearch" v-if="computeCanSearch">検索</v-chip>
 
                     <v-divider vertical class="d-none d-md-flex" />
 
@@ -20,16 +20,8 @@
                         <r-btn :pages="pages" />
                     </div>
 
-                    <div class="d-none d-md-flex">
-                        <v-divider vertical class="mr-4" />
-
-                        <!-- ログイン状態に応じた表示 -->
-                        <v-btn v-if="!loggedIn" prepend-icon="mdi-discord" color="primary" variant="outlined"
-                            @click="showAuthDialog" density="comfortable">
-                            ログイン
-                        </v-btn>
-
-                        <v-btn v-else icon density="comfortable" @click="showUserDialog">
+                    <div class="d-none d-md-flex" v-if="loggedIn">
+                        <v-btn icon density="comfortable" @click="showUserDialog">
                             <v-avatar :image="user?.avatar" size="28" />
                         </v-btn>
                     </div>
@@ -49,6 +41,7 @@
                 <slot v-else></slot>
 
                 <auth-dialog />
+                <search-dialog :category="getCategory()" />
             </v-container>
         </v-main>
 
@@ -63,12 +56,26 @@ import { useTheme } from 'vuetify/lib/composables/theme.mjs';
 import { pages } from '~/assets/data/pages';
 const { user, loggedIn, clear } = useUserSession()
 const { showAuthDialog, showUserDialog } = useAuthDialog()
+const { openSearchDialog } = useSearch()
 const theme = useTheme()
 const error = useError()
+const route = useRoute()
 
 const drawer = ref(false)
 const modal = ref(false)
 const getIndColor = computed(() => theme.current.value.colors.primary)
+const computeCanSearch = computed(() => canSeach())
+
+const canSeach = () => pages.find(p => p.route == getFirstSegment(route.path))?.search
+const getCategory = () => getFirstSegment(route.path)
+
+const handleSearch = () => {
+    console.log('pressed button')
+    if (canSeach()) {
+        console.log('searchable')
+        openSearchDialog(getFirstSegment(route.path).replace('/', ''))
+    }
+}
 
 const logout = () => {
     modal.value = false
