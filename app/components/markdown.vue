@@ -17,7 +17,7 @@
 import { useRoute } from "vue-router";
 
 const route = useRoute();
-const { md, getMarkdown, fetchFiles } = useMarkdown();
+const { getMarkdown, fetchFiles } = useMarkdown();
 
 const content = ref("");
 const meta = ref<any>({});
@@ -31,7 +31,7 @@ onMounted(async () => {
   try {
     const files: { path: string, slug: string }[] = await fetchFiles(props.category);
     const slugPath = (route.params.slug as string[]).join("/");
-    const file = files.filter(f => f.slug == `guide/${slugPath}`)[0]
+    const file = files.filter(f => f.slug == `${props.category}/${slugPath}`)[0]
 
     if (!file) {
       content.value = "<p>Not found</p>";

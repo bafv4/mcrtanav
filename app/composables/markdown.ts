@@ -1,5 +1,5 @@
 import MarkdownIt from 'markdown-it'
-import yaml from 'js-yaml'
+import { parseFrontmatter, createFileComparator } from '~/utils/frontmatter'
 
 const GITHUB_API_BASE = 'https://api.github.com/repos/bafv4/mcrtanav-contents/git/trees/main?recursive=1'
 const GITHUB_RAW_BASE = 'https://raw.githubusercontent.com/bafv4/mcrtanav-contents/main'
@@ -20,27 +20,6 @@ export const useMarkdown = () => {
     return `<img src="${src}" alt="${alt}" class="my-4 rounded-lg" style="max-width: 100%;" />`
   }
 
-  // frontmatterを解析
-  const parseFrontmatter = (content: string) => {
-    let meta: Record<string, any> = {}
-    let body = content
-
-    if (content.startsWith("---")) {
-      const endIndex = content.indexOf("\n---", 3)
-      if (endIndex !== -1) {
-        const frontmatter = content.slice(3, endIndex).trim()
-        body = content.slice(endIndex + 4).trim()
-
-        try {
-          meta = yaml.load(frontmatter) as Record<string, any>
-        } catch (error) {
-          console.warn("YAML parse error:", error)
-        }
-      }
-    }
-
-    return { meta, body }
-  }
 
   // ファイル一覧を取得（パスのみ）
   const fetchFiles = async (category: string) => {
@@ -80,13 +59,13 @@ export const useMarkdown = () => {
           return {
             ...file,
             meta: {
-              title: meta.title || file.slug,
               description: meta.description || '',
               tags: meta.tags || [],
               author: meta.author || null,
               date: meta.date || null,
               order: meta.order || 999,
-              ...meta
+              ...meta,
+              title: meta.title || file.slug
             }
           }
         } catch (error) {
@@ -107,20 +86,7 @@ export const useMarkdown = () => {
     )
 
     // ソート: order → date → title
-    return filesWithMeta.sort((a, b) => {
-      // orderでソート
-      if (a.meta.order !== b.meta.order) {
-        return a.meta.order - b.meta.order
-      }
-
-      // 日付でソート（新しいものが先）
-      if (a.meta.date && b.meta.date) {
-        return new Date(b.meta.date).getTime() - new Date(a.meta.date).getTime()
-      }
-
-      // タイトルでソート
-      return a.meta.title.localeCompare(b.meta.title)
-    })
+    return filesWithMeta.sort(createFileComparator)
   }
 
   // 単一ファイルを取得してHTMLに変換

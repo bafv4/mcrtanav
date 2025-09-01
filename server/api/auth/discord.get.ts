@@ -18,7 +18,13 @@ export default defineOAuthDiscordEventHandler({
       )
 
       // ロールチェック
-      const allowed = member.roles.valueOf().some((r) => config.allowedRoleIds.includes(r.toString()))
+      const allowedRoleIds = [
+        config.adminRoleId,
+        config.rulesEditorRoleId, 
+        config.guideEditorRoleId
+      ].filter(Boolean) // undefinedを除外
+      
+      const allowed = member.roles.valueOf().some((r) => allowedRoleIds.includes(r.toString()))
       if (!allowed) {
         // ログイン失敗：権限不足
         return sendRedirect(event, '/?loginFailure=true&error=access_denied')

@@ -145,4 +145,20 @@ $heights: (
     h3 {
         @extend .th-4;
     }
+
+    p {
+        margin: .25em auto;
+    }
+
+    strong {
+        @extend .tw-700 !optional;
+    }
+
+    ul, ol {
+        margin-left: 1.5em;
+    }
+
+    li {
+        margin: .1em 0;
+    }
 }

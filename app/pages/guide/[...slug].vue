@@ -1,3 +1,3 @@
 <template>
-  <r-markdown category="guide" />
+  <markdown category="guide" />
 </template>

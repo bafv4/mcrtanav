@@ -17,7 +17,7 @@
                     <v-divider vertical class="d-none d-md-flex" />
 
                     <div class="d-none d-md-flex">
-                        <r-btn :pages="pages" />
+                        <router-btn :pages="pages" />
                     </div>
 
                     <div class="d-none d-md-flex" v-if="loggedIn">
@@ -33,7 +33,7 @@
             <v-container>
                 <v-navigation-drawer class="drawer d-block d-md-none" v-model="drawer" location="left" mobile app>
                     <v-container class="d-flex flex-column justify-start ga-2">
-                        <r-btn :pages="pages" mobile />
+                        <router-btn :pages="pages" mobile />
                     </v-container>
                 </v-navigation-drawer>
 
@@ -41,7 +41,6 @@
                 <slot v-else></slot>
 
                 <auth-dialog />
-                <!-- <search-dialog :category="getCategory()" /> -->
                  <search />
             </v-container>
         </v-main>
@@ -54,10 +53,9 @@
 
 <script setup lang="ts">
 import { useTheme } from 'vuetify/lib/composables/theme.mjs';
-import { pages } from '~/assets/data/pages';
+import { pages } from '@/assets/data/pages';
 const { user, loggedIn, clear } = useUserSession()
 const { showAuthDialog, showUserDialog } = useAuthDialog()
-// const { openSearchDialog } = useSearch()
 const { openSearchDialog } = useSearchWithFuse()
 const theme = useTheme()
 const error = useError()

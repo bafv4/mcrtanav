@@ -1,4 +1,5 @@
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
+import { fileURLToPath } from 'node:url'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -38,8 +39,16 @@ export default defineNuxtConfig({
     // サーバー側でのみ利用
     discordBotToken: process.env.DISCORD_BOT_TOKEN,
     targetGuildId: process.env.TARGET_GUILD_ID,
-    allowedRoleIds: process.env.ALLOWED_ROLE_IDS?.split(',') ?? [],
     redirectUri: process.env.REDIRECT_URI,
+    
+    // ロール別ID設定
+    adminRoleId: process.env.ADMIN_ROLE_ID,
+    rulesEditorRoleId: process.env.RULES_EDITOR_ROLE_ID,
+    guideEditorRoleId: process.env.GUIDE_EDITOR_ROLE_ID,
+    
+    // エディタ機能用の環境変数
+    githubToken: process.env.GITHUB_TOKEN,
+    discordWebhookUrl: process.env.DISCORD_WEBHOOK_URL,
 
     // クライアントでも使いたい変数は public に
     public: {
