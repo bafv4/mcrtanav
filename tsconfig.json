@@ -17,7 +17,8 @@
   ],
   "compilerOptions": {
     "paths": {
-      "@/*": ["./app/*"]
+      "@/*": ["./app/*"],
+      "#/*": ["./shared/*"]
     }
   }
 }

@@ -1,4 +1,5 @@
 import { GuildMember } from 'discord.js'
+import { getAuthorities } from '~~/server/utils/authority-server'
 
 export default defineOAuthDiscordEventHandler({
   config: {
@@ -17,15 +18,9 @@ export default defineOAuthDiscordEventHandler({
         }
       )
 
-      // ロールチェック
-      const allowedRoleIds = [
-        config.adminRoleId,
-        config.rulesEditorRoleId, 
-        config.guideEditorRoleId
-      ].filter(Boolean) // undefinedを除外
-      
-      const allowed = member.roles.valueOf().some((r) => allowedRoleIds.includes(r.toString()))
-      if (!allowed) {
+      const authorities = getAuthorities(user.roles)
+
+      if (authorities.length < 1) {
         // ログイン失敗：権限不足
         return sendRedirect(event, '/?loginFailure=true&error=access_denied')
       }
@@ -40,7 +35,7 @@ export default defineOAuthDiscordEventHandler({
           id: user.id,
           name: member.user.globalName || member.user.username,
           avatar: avatarUrl,
-          authority: [], // 必要に応じて権限情報を設定
+          authorities: authorities, // 必要に応じて権限情報を設定
         },
         loggedInAt: new Date().toISOString(),
       })

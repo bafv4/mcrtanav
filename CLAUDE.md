@@ -4,145 +4,89 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Nuxt 3 application for "マイクラRTAナビ" (Minecraft RTA Navigator), a Japanese website that provides guides, rules, and tools for Minecraft speedrunning. The app uses Vuetify for UI components, Fuse.js for search functionality, Discord OAuth for authentication, and includes a comprehensive markdown editor system.
+**MCRTAWIKI（マイクラRTAWiki）** - A Nuxt.js-based web application for Minecraft RTA (Real Time Attack) documentation with Discord-based authentication and role-based access control.
 
 ## Development Commands
 
 ```bash
-# Install dependencies (project uses pnpm)
-pnpm install
-
-# Start development server on http://localhost:3000
+# Development server
 pnpm dev
 
 # Build for production
 pnpm build
 
+# Generate static site
+pnpm generate
+
 # Preview production build
 pnpm preview
 
-# Generate static site
-pnpm generate
+# Install dependencies
+pnpm install
 ```
 
 ## Architecture
 
-### Core Technologies
-- **Nuxt 3** (SSR disabled) - Vue.js framework
-- **Vuetify 3** - Material Design UI components  
-- **Fuse.js** - Fuzzy search with configurable options
-- **Discord.js** - Discord bot integration
-- **nuxt-auth-utils** - Authentication management
-- **TipTap** - Rich text editor with extensions
-- **Sharp** - Server-side image processing
-- **Sass** - CSS preprocessing
-
-### Key Directories
-- `app/` - Main application code (Nuxt convention)
-  - `pages/` - File-based routing with dynamic slug pages
-  - `components/` - Vue components including search, markdown, auth dialogs, editor components
-  - `composables/` - Composable functions for search, auth, markdown processing, editor functionality
-  - `middleware/` - Route middleware for authentication
-  - `assets/data/` - Static data like page configuration and editor templates
-  - `plugins/` - Vuetify configuration
-  - `types/` - TypeScript type definitions
-- `server/api/` - Nuxt server routes (Discord OAuth, content management APIs)
+### Framework Stack
+- **Nuxt 4.1.1** - Vue.js framework with SSR disabled (`ssr: false`)
+- **Vue 3.5.21** - Frontend framework
+- **Vuetify 3.9.7** - Material Design component framework
+- **TypeScript** - Type safety with path aliases `@/*` → `./app/*` and `#/*` → `./shared/*`
+- **PNPM** - Package manager
 
 ### Authentication System
-- Discord OAuth integration via `nuxt-auth-utils`
-- Global middleware checks authentication for `/moderation` and `/editor` routes
-- Auth dialog composable manages login state
-- Role-based permissions using Discord guild roles (admin, guide_editor, rules_editor)
+- **Discord OAuth2** integration using `nuxt-auth-utils`
+- Role-based access control with three permission levels:
+  - Admin Role (`ADMIN_ROLE_ID`)
+  - Rules Editor Role (`RULES_EDITOR_ROLE_ID`) 
+  - Guide Editor Role (`GUIDE_EDITOR_ROLE_ID`)
+- Server-side validation in `server/utils/authority-server.ts`
+- Authentication handler at `server/api/auth/discord.get.ts`
 
-### Search Implementation
-- Fuse.js powers fuzzy search with weighted field scoring
-- Search indexes built dynamically from markdown content
-- Supports advanced query syntax (exact match, exclusion, OR/AND)
-- Categories: guide, rules with Japanese display names
+### Directory Structure
+```
+app/                    # Client-side application code
+├── assets/            # Static assets and styles
+├── components/        # Vue components
+├── composables/       # Vue composables
+├── layouts/           # Layout components
+├── middleware/        # Route middleware
+├── pages/             # File-based routing
+├── plugins/           # Nuxt plugins (Vuetify setup)
+└── utils/             # Client-side utilities
 
-### Content Management
-- Markdown files processed server-side with frontmatter metadata
-- Dynamic routing for guide and rules sections via `[...slug].vue`
-- TipTap editor for rich text editing capabilities
+server/                # Server-side code
+├── api/               # API routes
+└── utils/             # Server-side utilities
 
-## Editor Functionality
-
-### Markdown Editor System
-- **TipTap WYSIWYG Editor**: Rich text editing with markdown export/import
-- **GitHub Integration**: Direct read/write to `bafv4/mcsrnav-content` repository
-- **Permission System**: Role-based access control by category
-- **Auto-save**: LocalStorage draft system with 24-hour retention
-- **Template System**: Pre-built templates for guides, rules, and general content
-- **Image Management**: Upload with automatic optimization and WebP conversion
-- **YouTube Integration**: Easy embedding of YouTube videos
-- **Discord Notifications**: Webhook notifications for content changes
-
-### Key Components
-- `app/components/editor/tiptap-editor.vue` - Main WYSIWYG editor with toolbar
-- `app/components/editor/metadata-editor.vue` - Frontmatter metadata management
-- `app/components/editor/template-selector.vue` - Template selection dialog
-- `app/pages/editor/[...path].vue` - Editor page with auto-save and recovery
-- `app/pages/editor/index.vue` - File management interface with search/filter
-
-### API Endpoints
-- `GET /api/content/files` - List markdown files with metadata and permissions
-- `GET /api/content/files/[...path]` - Get single file content with edit permissions
-- `PUT /api/content/files/[...path]` - Save/update file content with GitHub commit
-- `POST /api/content/images` - Upload images with optimization and GitHub storage
-- `GET /api/content/templates` - Get available templates filtered by permissions
-
-### Permission System
-```typescript
-// Permission levels per category
-admin: all files (guide, rules, general)
-guide_editor: guide category files only  
-rules_editor: rules category files only
+shared/                # Shared code between client/server
+├── types/             # TypeScript type definitions
+└── utils/             # Shared utilities
 ```
 
-### Image Management
-- **Upload Processing**: Sharp.js for resize/compression (max 1200px, 80% quality)  
-- **WebP Generation**: Automatic WebP conversion for modern browsers
-- **GitHub Storage**: Images stored in `images/{category}/{year}/{month}/` structure
-- **UUID Naming**: Collision-free filename generation
-- **Security**: File type and size validation (2MB limit)
+### Styling & UI
+- **Vuetify** configured with Material Design Icons (MDI) and FontAwesome
+- **SCSS** styling with custom themes (light/dark mode support)
+- Theme configuration in `app/plugins/vuetify.ts`
+- Custom styles in `app/assets/styles/`
 
-### Template System
-- **Built-in Templates**: Guide templates (basic, advanced, video, walkthrough), rule templates (competition, general), blank template
-- **Category Filtering**: Templates filtered by user permissions
-- **Metadata Integration**: Templates include pre-configured metadata
-- **Statistics**: Word count, line count, estimated reading time
+### Key Features
+- **Search functionality** using Fuse.js for fuzzy searching
+- **Markdown rendering** with `markdown-it`
+- **Image optimization** with `@nuxt/image`
+- **Font loading** with `@nuxt/fonts`
 
-### Draft System
-- **Auto-save**: Saves to localStorage every 5 seconds of inactivity
-- **Recovery**: Prompts user to recover drafts on page load
-- **Expiration**: 24-hour retention period
-- **Versioning**: Basic version tracking for conflict resolution
+### Environment Configuration
+Required environment variables:
+- `DISCORD_BOT_TOKEN` - Discord bot token for API access
+- `TARGET_GUILD_ID` - Discord server ID
+- `REDIRECT_URI` - OAuth redirect URI
+- `ADMIN_ROLE_ID`, `RULES_EDITOR_ROLE_ID`, `GUIDE_EDITOR_ROLE_ID` - Discord role IDs
+- `GITHUB_TOKEN` - For GitHub integration
+- `DISCORD_WEBHOOK_URL` - For Discord notifications
 
-### Environment Variables
-```bash
-# GitHub API integration (repo scope required)
-GITHUB_TOKEN=ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-# Discord webhook for content change notifications (optional)
-DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/xxx/xxx
-
-# Existing Discord OAuth variables
-DISCORD_BOT_TOKEN=
-TARGET_GUILD_ID=
-ALLOWED_ROLE_IDS=
-REDIRECT_URI=
-DISCORD_REDIRECT_URI=
-```
-
-## Development Notes
-
-- The app is SPA-only (`ssr: false`) 
-- Uses file-based routing with catch-all dynamic routes
-- Search functionality requires building indexes for each category
-- Authentication is handled via Discord OAuth with role checking
-- Component naming follows kebab-case convention (router-btn, auth-dialog)
-- Uses TypeScript throughout with custom type definitions
-- Editor functionality integrates with existing composables (useUserSession, useMarkdown)
-- All editor operations require authentication and appropriate permissions
-- GitHub API operations include proper error handling and rate limit considerations
-- このプロジェクトの内容を把握してください。
+### Development Notes
+- Uses file-based routing via Nuxt pages
+- TypeScript paths: `@/` for app directory, `#/` for shared directory
+- Authority validation happens server-side before setting user session
+- Discord avatar URLs are dynamically constructed based on guild membership

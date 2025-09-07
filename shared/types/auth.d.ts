@@ -2,7 +2,7 @@ export interface User {
   id: string
   name: string
   avatar: string
-  authority: string[]
+  authorities: string[]
 }
 
 declare module '#auth-utils' {
@@ -10,7 +10,7 @@ declare module '#auth-utils' {
     id: string
     name: string  
     avatar: string
-    authority: string[]
+    authorities: string[]
   }
 
   interface UserSession {

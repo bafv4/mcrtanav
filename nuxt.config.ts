@@ -1,5 +1,4 @@
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
-import { fileURLToPath } from 'node:url'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -14,12 +13,19 @@ export default defineNuxtConfig({
     (_options, nuxt) => {
       nuxt.hooks.hook('vite:extendConfig', (config) => {
         // @ts-expect-error
-        config.plugins.push(vuetify({ autoImport: true }))
+        config.plugins.push(vuetify(
+          {
+            autoImport: true,
+            // styles: {
+            //   configFile: '@assets/styles/settings.scss'
+            // }
+          }
+        ))
       })
     }
   ],
   ssr: false,
-  css: ['vuetify/styles', '@/assets/styles/main.scss', '@mdi/font/css/materialdesignicons.css'],
+  css: ['vuetify/styles'],
   vite: {
     define: {
       'process.env.DEBUG': false,
@@ -40,12 +46,12 @@ export default defineNuxtConfig({
     discordBotToken: process.env.DISCORD_BOT_TOKEN,
     targetGuildId: process.env.TARGET_GUILD_ID,
     redirectUri: process.env.REDIRECT_URI,
-    
+
     // ロール別ID設定
     adminRoleId: process.env.ADMIN_ROLE_ID,
     rulesEditorRoleId: process.env.RULES_EDITOR_ROLE_ID,
     guideEditorRoleId: process.env.GUIDE_EDITOR_ROLE_ID,
-    
+
     // エディタ機能用の環境変数
     githubToken: process.env.GITHUB_TOKEN,
     discordWebhookUrl: process.env.DISCORD_WEBHOOK_URL,

@@ -1,7 +1,7 @@
 import 'vuetify/styles'
 import '@mdi/font/css/materialdesignicons.css'
 import { aliases, mdi } from 'vuetify/iconsets/mdi'
-import { aliases as fa_aliases, fa } from 'vuetify/iconsets/fa-svg'
+import { fa } from 'vuetify/iconsets/fa-svg'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import colors from 'vuetify/util/colors'
@@ -9,6 +9,8 @@ import { createVuetify } from 'vuetify'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import { library } from '@fortawesome/fontawesome-svg-core'
+
+import '../assets/styles/main.scss'
 
 import { defineNuxtPlugin } from '#app'
 
@@ -33,8 +35,8 @@ const theme = {
         dark: {
             dark: true,
             colors: {
-                primary: colors.lightGreen.lighten2,   // ダーク用に少し明るい青緑
-                secondary: colors.deepPurple.lighten2,
+                primary: colors.deepPurple.lighten4,   // ダーク用に少し明るい青緑
+                secondary: colors.lightGreen.lighten4,
                 accent: colors.amber.lighten2,
                 background: colors.grey.darken4,
                 surface: '#272729',
